@@ -1,42 +1,52 @@
 #include "Node.h"
-#include "Student.h"
-#include "Class.h"
 
 #include <vector>
 
+Node *head;
+Node *last;
+
+void setUp(int stdIndex, int clsIndex) {
+    head = new Node();
+    last = new Node();
+
+    head->studentID = stdIndex++;
+    head->nextStudent = last;
+    
+    last->studentID = stdIndex++;
+    last->nextStudent = nullptr;
+}
+
+void addElement(int stdIndex, int clsIndex) {
+    Node *another = new Node();
+
+    last = head;
+    while(last->nextStudent != nullptr) {
+        last = last->nextStudent;   //Finds last node
+    }
+    another = last;
+    last = new Node();
+    another->nextStudent = last;
+    last->nextStudent = nullptr;
+}
+
+void showElements() {
+    last = head;
+    while(last->nextStudent != nullptr) {
+        std::cout << last->studentID << " ";
+        last = last->nextStudent;
+    }
+    std::cout << last->studentID << " ";
+}
+
 int main() {
+    int stdIndex = 0;
+    int clsIndex = 0;
 
-    int tempStdID;
-
-    std::vector<Student*> row;
-    std::vector<Class*> column;
- 
-    for(int i = 0; i < 10; i++) {
-        row.push_back(new Student());
-    }
-
-    for(int i = 0; i < 5; i++) {
-        column.push_back(new Class());
-    }
-
-    /*for(int i = 0; i < 10; i++) {
-        if(i == 9) {
-            row[i]->S_nextStudent = nullptr;
-        }
-        else{
-            row[i]->S_nextStudent = row[i + 1];
-        }
-    }
-
-    for(int i = 0; i < 5; i++) {
-        if(i == 4) {
-            column[i]->C_nextClass = nullptr;
-        }
-        else{
-            column[i]->C_nextClass = column[i + 1];
-        }
-    } */   
-
+    setUp(stdIndex, clsIndex);
+    addElement(4, 5);
+    showElements();
+    
+    delete head;
     std::cout << std::endl;    
     return 0;
 }
