@@ -8,8 +8,8 @@ class Node {
         int studentID;
         int classID;
         int grade;
-        Node* nextClass;
-        Node* nextStudent;
+        Node *nextStudent;
+        Node *nextClass;
 
         Node();
         Node(int, int, int);

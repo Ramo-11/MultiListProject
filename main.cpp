@@ -1,52 +1,82 @@
 #include "Node.h"
+#include <cmath>
 
-#include <vector>
+    Node *head = new Node();
+    Node *second = new Node();
+    Node *pointer = new Node();
 
-Node *head;
-Node *last;
-
-void setUp(int stdIndex, int clsIndex) {
-    head = new Node();
-    last = new Node();
-
-    head->studentID = stdIndex++;
-    head->nextStudent = last;
-    
-    last->studentID = stdIndex++;
-    last->nextStudent = nullptr;
+void setUp() {
+    head->nextStudent = second;
+    second->nextStudent = pointer;
+    pointer->nextStudent = nullptr;
 }
 
-void addElement(int stdIndex, int clsIndex) {
-    Node *another = new Node();
+void indexNodes() {
+    int index = 1;
+    pointer = head;
 
-    last = head;
-    while(last->nextStudent != nullptr) {
-        last = last->nextStudent;   //Finds last node
+    while(pointer->nextStudent != nullptr) {
+        pointer->studentID = index++;
+        pointer = pointer->nextStudent;
     }
-    another = last;
-    last = new Node();
-    another->nextStudent = last;
-    last->nextStudent = nullptr;
+    pointer->studentID = index;
 }
 
-void showElements() {
-    last = head;
-    while(last->nextStudent != nullptr) {
-        std::cout << last->studentID << " ";
-        last = last->nextStudent;
+//returns the number of existing nodes
+int getNodeNum() {
+    int nodesNum = 0;
+
+    pointer = head;
+    while(pointer->nextStudent != nullptr) {
+        pointer = pointer->nextStudent;
+        nodesNum++;
     }
-    std::cout << last->studentID << " ";
+    return (nodesNum + 1);
+}
+
+void addElement(int choice) {
+    pointer = head;
+
+    while(pointer->nextStudent != nullptr) {
+        pointer = pointer->nextStudent;    //Find the pointer node and assign it to pointer
+    } 
+
+    Node *newNode = new Node();
+    newNode = pointer;
+    pointer = new Node();
+    newNode->nextStudent = pointer;
+    pointer->nextStudent = nullptr;
+}
+
+bool findStudent(int choice) {
+    pointer = head;
+
+    while(pointer->nextStudent != nullptr) {
+        if(pointer->studentID == choice) {
+            return true;
+        }
+        pointer = pointer->nextStudent;
+    }
+    return false;
 }
 
 int main() {
-    int stdIndex = 0;
-    int clsIndex = 0;
-
-    setUp(stdIndex, clsIndex);
-    addElement(4, 5);
-    showElements();
     
-    delete head;
-    std::cout << std::endl;    
+    int choice;
+
+    setUp();
+    indexNodes();
+
+    std::cout << "What is the number of student you want add?\n";
+    std::cin >> choice;
+
+    if(findStudent(choice)) {
+        std::cout << "Found";
+    }
+    else {
+        std::cout << "not found";
+    }
+
+    std::cout << "\n";
     return 0;
 }
