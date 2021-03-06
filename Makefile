@@ -1,13 +1,7 @@
-main: main.o Node.o 
-	g++ -g main.o Node.o -o main
+main:  
+	g++ -g main.cpp Node.cpp -o main
 
-main.o: 
-	g++ -g -c main.cpp
-
-Node.o: 
-	g++ -g -c Node.cpp
-
-run:
+run: main
 	./main
 
 clean:
