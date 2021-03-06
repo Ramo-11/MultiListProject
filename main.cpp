@@ -2,12 +2,12 @@
 #include <cmath>
 
 void setUp();
-void indexNodes();
-int getNodeNum();
-void addElement(int);
-bool findStudent(int);
-int studentGrade(int);
-void addGrade(int, int);
+//int getNodeNum();
+void addElement(int);   //Adds a student element node
+bool findStudent(int);  //Finds if a node with the given index exist
+int studentGrade(int);  //returns the grade of the given student
+void addGrade(int, int);    //assigns a grade to the given student node
+void checkLastNode();
 
     Node *head = new Node();
     Node *second = new Node();
@@ -20,11 +20,13 @@ int main() {
 
     setUp();
 
-    std::cout << "Enter a student's number: \n";
-
     while((choice != 0) || (gradeChoice != 0)) 
     {
+        std::cout << "Enter a student's number (and zero to exit): \n";
         std::cin >> choice;
+        if(choice == 0) {
+            break;
+        }
         if(findStudent(choice))
         {
             std::cout << "student has been found!\n";
@@ -34,34 +36,29 @@ int main() {
         {
             addElement(choice);
             std::cout << "student has been added!\n";
-            std::cout << "Enter student's grade: \n";
+            std::cout << "Enter student's grade (and zero to exit): \n";
             std::cin >> gradeChoice;
+            if(gradeChoice == 0) {
+                break;
+            }
             addGrade(choice, gradeChoice);
             std::cout << "student's grade has been added\n";
         }
     }
+    //checkLastNode();
+
     std::cout << "\n";
     return 0;
 }
 
-void setUp() {
+void setUp() 
+{
+    head->studentID = 1;
     head->nextStudent = nullptr;
-    indexNodes();
 }
 
-void indexNodes() {
-    int index = 1;
-    pointer = head;
-
-    while(pointer->nextStudent != nullptr) {
-        pointer->studentID = index++;
-        pointer = pointer->nextStudent;
-    }
-    pointer->studentID = index;
-}
-
-//returns the number of existing nodes
-int getNodeNum() {
+/*int getNodeNum() 
+{
     int nodesNum = 0;
 
     pointer = head;
@@ -70,25 +67,10 @@ int getNodeNum() {
         nodesNum++;
     }
     return (nodesNum + 1);
-}
+}*/
 
-void addElement(int choice) {
-    pointer = head;
-
-    while(pointer->nextStudent != nullptr) {
-        pointer = pointer->nextStudent;    //Find the last node
-    } 
-
-    Node *newNode = new Node();
-    newNode = pointer;
-    pointer = new Node();
-    newNode->nextStudent = pointer;
-    pointer->nextStudent = nullptr;
-
-    newNode->studentID = choice;
-}
-
-bool findStudent(int choice) {
+bool findStudent(int choice) 
+{
     pointer = head;
 
     while(pointer->nextStudent != nullptr) {
@@ -101,6 +83,21 @@ bool findStudent(int choice) {
         return true;
     }
     return false;
+}
+
+void addElement(int choice) 
+{
+    pointer = head;
+
+    while(pointer->nextStudent != nullptr) {
+        pointer = pointer->nextStudent;    //Find the last node
+    } 
+
+    Node *newNode = new Node();
+    pointer->nextStudent = newNode;
+    newNode->nextStudent = nullptr;
+
+    newNode->studentID = choice;
 }
 
 void addGrade(int choice, int gradeChoice)
@@ -127,4 +124,16 @@ int studentGrade(int choice)
         pointer = pointer->nextStudent;
     }
     return pointer->grade;
+}
+
+void checkLastNode()
+{
+    pointer = head;
+
+    while(pointer->nextStudent != nullptr) 
+    {
+        std::cout << pointer->studentID << std::endl;
+        pointer = pointer->nextStudent;
+    }
+    std::cout << pointer->studentID << std::endl;
 }
