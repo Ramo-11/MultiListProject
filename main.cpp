@@ -3,11 +3,11 @@
 
 void setUp();
 //int getNodeNum();
-void addElement(int);   //Adds a student element node
+void insertNode(int);   //Adds a student element node
 bool findStudent(int);  //Finds if a node with the given index exist
 int studentGrade(int);  //returns the grade of the given student
 void addGrade(int, int);    //assigns a grade to the given student node
-void checkLastNode();
+void printNodes();
 
     Node *head = new Node();
     Node *second = new Node();
@@ -34,7 +34,7 @@ int main() {
         }
         else 
         {
-            addElement(choice);
+            insertNode(choice);
             std::cout << "student has been added!\n";
             std::cout << "Enter student's grade (and zero to exit): \n";
             std::cin >> gradeChoice;
@@ -42,10 +42,11 @@ int main() {
                 break;
             }
             addGrade(choice, gradeChoice);
-            std::cout << "student's grade has been added\n";
+            std::cout << "student's grade has been added\n\n";
         }
-    }
-    //checkLastNode();
+    } //end while
+
+    printNodes();
 
     std::cout << "\n";
     return 0;
@@ -85,17 +86,40 @@ bool findStudent(int choice)
     return false;
 }
 
-void addElement(int choice) 
+void insertNode(int choice) 
 {
+    Node *newNode = new Node();
+    Node *temp1 = new Node();
+    Node *temp2 = new Node();
+
     pointer = head;
 
-    while(pointer->nextStudent != nullptr) {
-        pointer = pointer->nextStudent;    //Find the last node
-    } 
+    while(pointer->nextStudent != nullptr)
+    {
+        if(choice < pointer->studentID)
+        {
+            temp1->nextStudent = newNode;
+            newNode->nextStudent = pointer;
 
-    Node *newNode = new Node();
-    pointer->nextStudent = newNode;
-    newNode->nextStudent = nullptr;
+            newNode->studentID = choice;
+            return;
+        }
+        else 
+        {
+            temp1 = pointer;
+            pointer = pointer->nextStudent;
+        }
+    }
+
+    if(choice < pointer->studentID)
+    {
+        temp1->nextStudent = newNode;
+        newNode ->nextStudent = pointer;
+    }
+    else {
+        pointer->nextStudent = newNode;
+        newNode->nextStudent = nullptr;
+    }
 
     newNode->studentID = choice;
 }
@@ -107,6 +131,7 @@ void addGrade(int choice, int gradeChoice)
     while(pointer->nextStudent != nullptr) {
         if(pointer->studentID == choice) {
             pointer->grade = gradeChoice;
+            return;
         }
         pointer = pointer->nextStudent;
     }
@@ -114,6 +139,7 @@ void addGrade(int choice, int gradeChoice)
 }
 
 int studentGrade(int choice)
+
 {
     pointer = head;
 
@@ -126,11 +152,11 @@ int studentGrade(int choice)
     return pointer->grade;
 }
 
-void checkLastNode()
+void printNodes() 
 {
     pointer = head;
 
-    while(pointer->nextStudent != nullptr) 
+    while(pointer ->nextStudent != nullptr) 
     {
         std::cout << pointer->studentID << std::endl;
         pointer = pointer->nextStudent;
