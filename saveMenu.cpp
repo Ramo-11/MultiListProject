@@ -2,6 +2,7 @@
 #include <cmath>
 
 void setUp();
+void menu();
 void insertStudentNode(int);   //Adds a student element node
 void insertElementNode(int, int);
 bool findStudent(int);  //Finds if a node with the given index exist
@@ -18,56 +19,74 @@ void addGrade(int, int, int);
     Node *pointer2 = new Node();
 
 int main() {
-    
+    int menuChoice;
     int stdNum = 1;
     int clssNum = 1;
     int gradeChoice = 1;
+    bool keepGoing = true;
 
-    setUp();
+    std::cout << "\nWelcome to my multi linked list program!\n\n";
 
-    while(stdNum != 0) 
-    {
-        std::cout << "Enter a student's number and a class number to add (enter zero for both to exit): \n";
-        std::cin >> stdNum;
-        std::cin >> clssNum;
-        if((stdNum == 0) || (clssNum == 0)) 
-            break;
-        if(findStudent(stdNum))
-        {
-            if(findNode(stdNum, clssNum))
-            {
-                std::cout << "Node has been Found\n";
-                std::cout << "Would you like to input a grade? (enter 1 for yes and 0 for no)\n";
-                std::cin >> gradeChoice;
-                if(gradeChoice == 1)
+    while(keepGoing) {
+        menu();
+        std::cin >> menuChoice;
+
+        switch(menuChoice)
+        {   
+            case 1:
+                std::cout << "Enter a student's number and a class number to add (enter zero for both to exit): \n";
+                std::cin >> stdNum;
+                std::cin >> clssNum;
+                if(findStudent(stdNum) && findNode(stdNum, clssNum))
+                {
+                    std::cout << "Node already exist\n";
+                    continue;
+                }
+                else if(findStudent(stdNum))
+                {
+                    insertElementNode(stdNum, clssNum);
+                    std::cout << "Node has been added\n\n";
+                    continue;
+                }
+                else 
+                {
+                    insertStudentNode(stdNum);
+                    insertElementNode(stdNum, clssNum);
+                    std::cout << "Node has been created!\n\n";
+                    continue;
+                }
+            case 2:
+                std::cout << "type student number and class number that you want to add the grade to: \n";
+                std::cin >> stdNum;
+                std::cin >> clssNum;
+                if(findStudent(stdNum) && findNode(stdNum, clssNum))
                 {
                     std::cout << "What grade would you like to input? (Enter a number between 0 and 100): \n";
                     std::cin >> gradeChoice;
                     if((gradeChoice < 0) || (gradeChoice > 100))
                     {
-                        std::cout << "Invalid Input~\n";
+                        std::cout << "Invalid Input\n\n";
                         continue;
                     }
                     addGrade(stdNum, clssNum, gradeChoice);
-                    std::cout << "Grade has been added\n";
+                    std::cout << "Grade has been added\n\n";
                     continue;
                 }
-            }
-            insertElementNode(stdNum, clssNum);
-            std::cout << "Node has been added\n";
-            continue;
-        }
-        insertStudentNode(stdNum);
-        insertElementNode(stdNum, clssNum);
-        std::cout << "Node has been created!\n";
-    } //end while
-
-    printNodes();
+                else 
+                {
+                    std::cout << "Node does not exist!\n\n";
+                    continue;
+                }
+            } //end switch      
+        } //end while
 
     delete pointer1;
     std::cout << "\n";
     return 0;
-}
+} //end main
+
+    //printNodes();
+
 
 void setUp() 
 {
@@ -76,6 +95,17 @@ void setUp()
 
     head->nextStudent = nullptr;
     head->nextClass = nullptr;
+}
+
+void menu()
+{
+    setUp();
+
+    std::cout << "Please choose what you would like to do from the following menu:\n";
+    std::cout << "1- Add a node\n";
+    std::cout << "2- add a grade to an existence node\n";
+    std::cout << "3- Print all the nodes\n";
+    std::cout << "4- Exit\n\n";
 }
 
 bool findStudent(int stdNum) 
