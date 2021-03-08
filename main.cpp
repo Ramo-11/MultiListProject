@@ -6,7 +6,7 @@ void insertStudentNode(int);   //Adds a student element node
 void insertElementNode(int, int);
 bool findStudent(int);  //Finds if a node with the given index exist
 bool findNode(int, int);
-int getStdGrade(int);  //returns the grade of the given student
+int getNodeGrade(int, int);  //returns the grade of the given student
 void addGrade(int, int);    //assigns a grade to the given student node
 void printNodes();
 Node* getStdNode(int);
@@ -22,44 +22,87 @@ int main() {
     int stdNum = 1;
     int clssNum = 1;
     int gradeChoice = 1;
+    int userChoice = 0;
+    bool keepGoing = true;
 
     setUp();
 
-    while(stdNum != 0) 
+    while(keepGoing) 
     {
-        std::cout << "Enter a student's number and a class number to add (enter zero for both to exit): \n";
-        std::cin >> stdNum;
-        std::cin >> clssNum;
-        if((stdNum == 0) || (clssNum == 0)) 
-            break;
-        if(findStudent(stdNum))
+        std::cout << "\nPress 1 to insert a node \tPress 2 to enter a grade\tPress 3 to get a grade from an existing node\tPress 4 to print all nodes\tPress 5 to exit\n";
+        std::cin >> userChoice;
+        if(userChoice == 1) 
         {
-            if(findNode(stdNum, clssNum))
+            std::cout << "Enter a student's number and a class number to add: \n";
+            std::cin >> stdNum;
+            std::cin >> clssNum;
+            if(findStudent(stdNum))
             {
-                std::cout << "Node has been Found\n";
-                std::cout << "Would you like to input a grade? (enter 1 for yes and 0 for no)\n";
-                std::cin >> gradeChoice;
-                if(gradeChoice == 1)
+                if(findNode(stdNum, clssNum))
+                {
+                    std::cout << "Node already exist\n";
+                    continue;
+                }
+                insertElementNode(stdNum, clssNum);
+                std::cout << "Node has been added\n";
+                continue;
+            }
+            else 
+            {
+                insertStudentNode(stdNum);
+                insertElementNode(stdNum, clssNum);
+                std::cout << "Node has been created\n";
+                continue;
+            }
+        }
+        else if(userChoice == 2)
+        {
+            std::cout << "Enter a student's number and a class number to add grade for: \n";
+            std::cin >> stdNum;
+            std::cin >> clssNum;
+            if(findStudent(stdNum))
+            {
+                if(findNode(stdNum, clssNum))
                 {
                     std::cout << "What grade would you like to input? (Enter a number between 0 and 100): \n";
                     std::cin >> gradeChoice;
                     if((gradeChoice < 0) || (gradeChoice > 100))
                     {
-                        std::cout << "Invalid Input~\n";
+                        std::cout << "Invalid Input\n";
                         continue;
                     }
                     addGrade(stdNum, clssNum, gradeChoice);
                     std::cout << "Grade has been added\n";
                     continue;
                 }
+                std::cout << "Node does not exist\n";
+                continue;
             }
-            insertElementNode(stdNum, clssNum);
-            std::cout << "Node has been added\n";
+            std::cout << "Node does not exist\n";
             continue;
         }
-        insertStudentNode(stdNum);
-        insertElementNode(stdNum, clssNum);
-        std::cout << "Node has been created!\n";
+        else if(userChoice == 3)
+        {
+            std::cout << "Enter student's number and class number:\n";
+            std::cin >> stdNum;
+            std::cin >> clssNum;
+            if(findStudent(stdNum))
+            {
+                if(findNode(stdNum, clssNum))
+                {
+                    std::cout << "Grade: " << getNodeGrade(stdNum, clssNum) << std::endl;
+                    continue;
+                }
+            }
+        }    
+        else if(userChoice == 4)
+        {
+            printNodes();
+            continue;
+        }
+        else {
+            break;
+        }
     } //end while
 
     printNodes();
@@ -253,15 +296,38 @@ void addGrade(int stdNum, int clssNum, int gradeChoice)
     return;
 }
 
-/*int getStdGrade(int stdNum)
+int getNodeGrade(int stdNum, int clssNum)
 {
     pointer1 = head;
 
-    while(pointer1->nextStudent != nullptr) 
+    while(pointer1->nextStudent != nullptr)
     {
-
+        pointer1 = pointer1->nextStudent;
+        if(pointer1->studentID == stdNum) //if student node was found, now search for class
+        {
+            temp1 = pointer1->nextClass;
+            while(temp1->nextClass != nullptr)
+            {
+                if(temp1->classID == clssNum)
+                {
+                    return temp1->grade;
+                }
+                temp1 = temp1->nextClass;
+            }
+            return temp1->grade; //It is the last node if not the previous one
+        } //end if
+    } //end while
+    temp1 = pointer1->nextClass;
+    while(temp1->nextClass != nullptr)
+    {
+        if(temp1->classID == clssNum)
+        {
+            return temp1->grade;
+        }
+        temp1 = temp1->nextClass;
     }
-}*/
+    return temp1->grade;
+}
 
 void printNodes() 
 {
