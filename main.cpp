@@ -105,8 +105,6 @@ int main() {
         }
     } //end while
 
-    printNodes();
-
     delete pointer1;
     std::cout << "\n";
     return 0;
