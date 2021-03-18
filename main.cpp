@@ -19,8 +19,8 @@ void addGrade(int, int, int);
 
 int main() {
     
-    int stdNum = 1;
-    int clssNum = 1;
+    int stdNum;
+    int clssNum;
     int gradeChoice = 1;
     int userChoice = 0;
     bool keepGoing = true;
@@ -44,15 +44,13 @@ int main() {
                     continue;
                 }
                 insertElementNode(stdNum, clssNum);
-                std::cout << "Node has been added\n";
-                continue;
+                std::cout << "Class node has been added to the student\n";
             }
             else 
             {
                 insertStudentNode(stdNum);
                 insertElementNode(stdNum, clssNum);
                 std::cout << "Node has been created\n";
-                continue;
             }
         }
         else if(userChoice == 2)
@@ -60,41 +58,38 @@ int main() {
             std::cout << "Enter a student's number and a class number to add grade for: \n";
             std::cin >> stdNum;
             std::cin >> clssNum;
-            if(findStudent(stdNum))
+            if(findStudent(stdNum) && findNode(stdNum, clssNum))
             {
-                if(findNode(stdNum, clssNum))
+                std::cout << "What grade would you like to input? (Enter a number between 0 and 100): \n";
+                std::cin >> gradeChoice;
+                if((gradeChoice < 0) || (gradeChoice > 100))
                 {
-                    std::cout << "What grade would you like to input? (Enter a number between 0 and 100): \n";
-                    std::cin >> gradeChoice;
-                    if((gradeChoice < 0) || (gradeChoice > 100))
-                    {
-                        std::cout << "Invalid Input\n";
-                        continue;
-                    }
-                    addGrade(stdNum, clssNum, gradeChoice);
-                    std::cout << "Grade has been added\n";
+                    std::cout << "Invalid Input\n";
                     continue;
                 }
-                std::cout << "Node does not exist\n";
+                addGrade(stdNum, clssNum, gradeChoice);
+                std::cout << "Grade has been added\n";
                 continue;
             }
             std::cout << "Node does not exist\n";
-            continue;
         }
         else if(userChoice == 3)
         {
             std::cout << "Enter student's number and class number:\n";
             std::cin >> stdNum;
             std::cin >> clssNum;
-            if(findStudent(stdNum))
+            if(findStudent(stdNum) && findNode(stdNum, clssNum))
             {
-                if(findNode(stdNum, clssNum))
+                if(getNodeGrade(stdNum, clssNum) == 0)
+                {
+                    std::cout << "No grade was found for the student in this class!\n";
+                }
+                else 
                 {
                     std::cout << "Grade: " << getNodeGrade(stdNum, clssNum) << std::endl;
-                    continue;
-                }
-            }
-        }    
+                } //end else
+            } //end if
+        }  //end else if  
         else if(userChoice == 4)
         {
             printNodes();
