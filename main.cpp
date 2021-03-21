@@ -1,22 +1,11 @@
 #include "Node.h"
-#include "setUp.h"
-#include "addGrade.h"
-#include "findNode.h"
-#include "findStudent.h"
-#include "getNodeGrade.h"
-#include "getStdNode.h"
-#include "insertElementNode.h"
-#include "insertStudentNode.h"
-#include "printNodes.h"
+#include "Methods.h"
 
 #include <cmath>
 
-Node* head = new Node();
-Node* temp1 = new Node();
-Node* pointer1 = new Node();
-Node* pointer2 = new Node();
-
 int main() {
+
+    Methods controller;
 
     int stdNum;
     int clssNum;
@@ -24,7 +13,7 @@ int main() {
     int userChoice = 0;
     bool keepGoing = true;
 
-    setUp();
+    controller.setUp();
 
     while(keepGoing) 
     {
@@ -35,20 +24,20 @@ int main() {
             std::cout << "Enter a student's number and a class number to add: \n";
             std::cin >> stdNum;
             std::cin >> clssNum;
-            if(findStudent(stdNum))
+            if(controller.findStudent(stdNum))
             {
-                if(findNode(stdNum, clssNum))
+                if(controller.findNode(stdNum, clssNum))
                 {
                     std::cout << "Node already exist\n";
                     continue;
                 }
-                insertElementNode(stdNum, clssNum);
+                controller.insertElementNode(stdNum, clssNum);
                 std::cout << "Class node has been added to the student\n";
             }
             else 
             {
-                insertStudentNode(stdNum);
-                insertElementNode(stdNum, clssNum);
+                controller.insertStudentNode(stdNum);
+                controller.insertElementNode(stdNum, clssNum);
                 std::cout << "Node has been created\n";
             }
         }
@@ -57,7 +46,7 @@ int main() {
             std::cout << "Enter a student's number and a class number to add grade for: \n";
             std::cin >> stdNum;
             std::cin >> clssNum;
-            if(findStudent(stdNum) && findNode(stdNum, clssNum))
+            if(controller.findStudent(stdNum) && controller.findNode(stdNum, clssNum))
             {
                 std::cout << "What grade would you like to input? (Enter a number between 0 and 100): \n";
                 std::cin >> gradeChoice;
@@ -66,7 +55,7 @@ int main() {
                     std::cout << "Invalid Input\n";
                     continue;
                 }
-                addGrade(stdNum, clssNum, gradeChoice);
+                controller.addGrade(stdNum, clssNum, gradeChoice);
                 std::cout << "Grade has been added\n";
                 continue;
             }
@@ -77,21 +66,21 @@ int main() {
             std::cout << "Enter student's number and class number:\n";
             std::cin >> stdNum;
             std::cin >> clssNum;
-            if(findStudent(stdNum) && findNode(stdNum, clssNum))
+            if(controller.findStudent(stdNum) && controller.findNode(stdNum, clssNum))
             {
-                if(getNodeGrade(stdNum, clssNum) == 0)
+                if(controller.getNodeGrade(stdNum, clssNum) == 0)
                 {
                     std::cout << "No grade was found for the student in this class!\n";
                 }
                 else 
                 {
-                    std::cout << "Grade: " << getNodeGrade(stdNum, clssNum) << std::endl;
+                    std::cout << "Grade: " << controller.getNodeGrade(stdNum, clssNum) << std::endl;
                 } //end else
             } //end if
         }  //end else if  
         else if(userChoice == 4)
         {
-            printNodes();
+            controller.printNodes();
             continue;
         }
         else {
@@ -99,7 +88,6 @@ int main() {
         }
     } //end while
 
-    delete pointer1;
     std::cout << "\n";
     return 0;
 }
