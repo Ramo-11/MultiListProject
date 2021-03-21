@@ -5,15 +5,19 @@
 #include "findStudent.h"
 #include "getNodeGrade.h"
 #include "getStdNode.h"
-#include "globalVariables.h"
 #include "insertElementNode.h"
 #include "insertStudentNode.h"
 #include "printNodes.h"
 
 #include <cmath>
 
+Node* head = new Node();
+Node* temp1 = new Node();
+Node* pointer1 = new Node();
+Node* pointer2 = new Node();
+
 int main() {
-    
+
     int stdNum;
     int clssNum;
     int gradeChoice = 1;

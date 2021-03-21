@@ -2,7 +2,11 @@
 #define Find_STUDENT_H
 
 #include "Node.h"
-#include "globalVariables.h"
+
+extern Node *head;
+extern Node *temp1;
+extern Node *pointer1;
+extern Node *pointer2;
 
 bool findStudent(int);
 
